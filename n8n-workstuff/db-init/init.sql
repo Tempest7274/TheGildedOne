@@ -1,2 +1,7 @@
-CREATE DATABASE wordpress_db;
-CREATE DATABASE moodle_db;
+CREATE DATABASE IF NOT EXISTS wordpress_db;
+CREATE DATABASE IF NOT EXISTS moodle_db;
+
+GRANT ALL PRIVILEGES ON wordpress_db.* TO 'user'@'%';
+GRANT ALL PRIVILEGES ON moodle_db.* TO 'user'@'%';
+
+FLUSH PRIVILEGES;
