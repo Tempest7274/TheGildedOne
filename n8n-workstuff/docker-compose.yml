@@ -26,6 +26,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./db-init:/docker-entrypoint-initdb.d/
+    restart: unless-stopped
   wordpress:
     image: wordpress:latest
     depends_on:
@@ -39,7 +40,7 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB}
     volumes:
       - wp_data:/var/www/html
-
+    restart: unless-stopped
   moodle:
     image: brandkern/moodle:4.5-latest
     depends_on:
@@ -55,6 +56,17 @@ services:
     volumes:
       - moodle_data:/var/www/moodledata
     restart: unless-stopped
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - "8082:80"
+    restart: unless-stopped
+
 volumes:
   n8n_data:
   db_data:
