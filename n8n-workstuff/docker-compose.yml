@@ -21,12 +21,11 @@ services:
     image: mariadb:11
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
-
+      - ./db-init:/docker-entrypoint-initdb.d/
   wordpress:
     image: wordpress:latest
     depends_on:
@@ -37,27 +36,25 @@ services:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB}
     volumes:
       - wp_data:/var/www/html
 
   moodle:
-    image: bitnamilegacy/moodle:latest
+    image: brandkern/moodle:4.5-latest
     depends_on:
       - db
     ports:
       - "8081:80"
     environment:
-      MOODLE_DATABASE_HOST: db
-      MOODLE_DATABASE_PORT_NUMBER: 3306
-      MOODLE_DATABASE_USER: ${MYSQL_USER}
-      MOODLE_DATABASE_PASSWORD: ${MYSQL_PASSWORD}
-      MOODLE_DATABASE_NAME: ${MYSQL_DATABASE}
-      MOODLE_USERNAME: ${MOODLE_USERNAME}
-      MOODLE_PASSWORD: ${MOODLE_PASSWORD}
+      DB_HOST: db
+      DB_NAME: ${MOODLE_DB}
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      WWWROOT: http://192.168.56.104:8081
     volumes:
-      - moodle_data:/bitnami/moodle
-
+      - moodle_data:/var/www/moodledata
+    restart: unless-stopped
 volumes:
   n8n_data:
   db_data:
