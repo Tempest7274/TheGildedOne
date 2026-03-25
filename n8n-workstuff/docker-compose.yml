@@ -52,7 +52,7 @@ services:
       DB_NAME: ${MOODLE_DB}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
-      WWWROOT: http://moodle:8081
+      WWWROOT: http://${VM_IP}:8081
     volumes:
       - moodle_data:/var/www/moodledata
     restart: unless-stopped
