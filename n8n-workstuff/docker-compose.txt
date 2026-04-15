@@ -10,7 +10,6 @@ services:
       - N8N_ENCRYPTION_KEY=${N8N_KEY}
       - NODES_EXCLUDE=[]
       - N8N_BLOCK_ENV_VARS_IN_EXECUTE_COMMAND=false
-      - WEBHOOK_URL=${WEBHOOK_URL}   
 
   tunnel:
     image: cloudflare/cloudflared:latest
